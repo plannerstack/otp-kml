@@ -3,6 +3,8 @@ import urllib2
 import json
 import polyline
 
+base_otp = 'http://planner.plannerstack.org/otp-rest-servlet/ws/plan?time=1%3A09am&date=07-12-2014&mode=CAR&maxWalkDistance=750&arriveBy=false&'
+
 if len(sys.argv) != 2:
     print  "Usage: %s test.csv" % (sys.argv[0])
     sys.exit(-1)
@@ -28,7 +30,7 @@ print """<?xml version="1.0" encoding="UTF-8"?>
 
 for line in f:
     name, x1, y1, x2, y2 = line[:-1].split(',')
-    output = json.loads(urllib2.urlopen('http://planner.plannerstack.org/otp-rest-servlet/ws/plan?fromPlace='+y1+'%2C'+x1+'&toPlace='+y2+'%2C'+x2+'&time=1%3A09am&date=07-12-2014&mode=CAR&maxWalkDistance=750&arriveBy=false').read())
+    output = json.loads(urllib2.urlopen(base_otp+'fromPlace='+y1+'%2C'+x1+'&toPlace='+y2+'%2C'+x2).read())
 
     if output['plan'] is not None:
         for itin in output['plan']['itineraries']:
